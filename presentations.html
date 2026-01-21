@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Case | Sarbesh</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-color: #004080;
+        --primary-light: #b3d1ff;
+        --primary-dark: #00264d;
+        --shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        --transition: 0.3s ease;
+      }
+
+      .pdf-description {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 1rem 0 0.5rem 0;
+        color: var(--primary-dark);
+      }
+
+      .pdf-toolbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        background: #f9f7f7;
+        padding: 1rem 1.5rem;
+        border-radius: 0 0 10px 10px;
+        box-shadow: var(--shadow);
+        margin: 1rem auto 2rem auto; /* <-- This adds the vertical spacing */
+        max-width: 900px;
+      }
+
+      .pdf-toolbar button {
+        background: var(--primary-color);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .pdf-toolbar button:disabled {
+        background: var(--primary-light);
+        cursor: not-allowed;
+      }
+
+      .pdf-toolbar .page-info {
+        font-weight: 500;
+        color: var(--primary-dark);
+      }
+
+      #pdf-canvas {
+        width: 100%;
+        max-width: 900px;
+        display: block;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 10px 10px 0 0;
+        box-shadow: var(--shadow);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <span>SB</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contributions.html">Research</a></li>
+          <li><a href="presentations.html" class="active">Show Case</a></li>
+        </ul>
+        <div class="hamburger"><span></span><span></span><span></span></div>
+      </nav>
+
+      <main class="presentations-content" style="flex-grow: 1; padding: 2rem 0">
+        <section>
+          <h1>Presentations</h1>
+          <p>
+            View presentations directly in your browser. Download and print are
+            disabled.
+          </p>
+
+          <!-- PDF Viewer #1 -->
+          <canvas id="pdf-canvas"></canvas>
+          <p class="pdf-description">Thesis Synopsis</p>
+          <!-- PDF Controls at the bottom, centered -->
+          <div class="pdf-toolbar">
+            <button id="prev-page" title="Previous Page">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-info"
+              >Page <span id="page-num">1</span> /
+              <span id="page-count">1</span></span
+            >
+            <button id="next-page" title="Next Page">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>&copy; 2025 Sarbesh Bhattacherjee | Published: July 2025  | Updated: August 2025</p>
+      </footer>
+    </div>
+
+    <!-- PDF.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <script>
+      const pdfUrl = "Synopsis_Summary.pdf"; // Update with your file name
+
+      const canvas = document.getElementById("pdf-canvas");
+      const ctx = canvas.getContext("2d");
+      let pdfDoc = null,
+        pageNum = 1,
+        scale = 1.2,
+        pageRendering = false,
+        pageNumPending = null;
+
+      canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+
+      function renderPage(num) {
+        pageRendering = true;
+        pdfDoc.getPage(num).then((page) => {
+          const viewport = page.getViewport({ scale: scale });
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          const renderContext = {
+            canvasContext: ctx,
+            viewport: viewport,
+          };
+          const renderTask = page.render(renderContext);
+
+          renderTask.promise.then(() => {
+            pageRendering = false;
+            document.getElementById("page-num").textContent = num;
+            document.getElementById("page-count").textContent = pdfDoc.numPages;
+            document.getElementById("prev-page").disabled = num <= 1;
+            document.getElementById("next-page").disabled =
+              num >= pdfDoc.numPages;
+            if (pageNumPending !== null) {
+              renderPage(pageNumPending);
+              pageNumPending = null;
+            }
+          });
+        });
+      }
+
+      function queueRenderPage(num) {
+        if (pageRendering) {
+          pageNumPending = num;
+        } else {
+          renderPage(num);
+        }
+      }
+
+      document.getElementById("prev-page").addEventListener("click", () => {
+        if (pageNum <= 1) return;
+        pageNum--;
+        queueRenderPage(pageNum);
+      });
+
+      document.getElementById("next-page").addEventListener("click", () => {
+        if (pageNum >= pdfDoc.numPages) return;
+        pageNum++;
+        queueRenderPage(pageNum);
+      });
+
+      pdfjsLib.getDocument(pdfUrl).promise.then((pdf) => {
+        pdfDoc = pdf;
+        document.getElementById("page-count").textContent = pdf.numPages;
+        renderPage(pageNum);
+      });
+
+      window.addEventListener("keydown", function (e) {
+        if ((e.ctrlKey || e.metaKey) && (e.key === "p" || e.key === "s")) {
+          e.preventDefault();
+        }
+      });
+    </script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+

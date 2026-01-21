@@ -1,0 +1,115 @@
+<!-- contributions.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Research | Sarbesh</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <span>SB</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contributions.html" class="active">Research</a></li>
+          <li><a href="presentations.html">Show Case</a></li>
+        </ul>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+
+      <main class="contributions-content">
+        <h1>Research Contributions</h1>
+
+        <div class="filter-section">
+          <div class="search-container">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search publications..."
+            />
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+          </div>
+
+          <div class="filter-container">
+            <div class="filter-group">
+              <label>Publication Type:</label>
+              <div class="filter-options">
+                <button class="filter-btn active" data-type="all">All</button>
+                <button class="filter-btn" data-type="journal">Journals</button>
+                <button class="filter-btn" data-type="conference">
+                  Conferences
+                </button>
+                <button class="filter-btn" data-type="book">
+                  Book Chapters
+                </button>
+                <button class="filter-btn" data-type="thesis">Thesis</button>
+                <button class="filter-btn" data-type="preprint">
+                  Preprints
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label>Year:</label>
+              <select id="year-filter">
+                <option value="all">All Years</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Sort by:</label>
+              <select id="sort-filter">
+                <option value="year-desc">Year (Newest)</option>
+                <option value="year-asc">Year (Oldest)</option>
+                <option value="title">Title</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="publications-container" id="publications-list">
+          <!-- Publications will be loaded here from CSV -->
+          <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading publications...</p>
+          </div>
+        </div>
+
+        <div class="no-results" style="display: none">
+          <p>No publications match your search criteria.</p>
+        </div>
+      </main>
+
+      <footer>
+        <p>&copy; 2025 Sarbesh Bhattacherjee | Published: July 2025 | Updated: August 2025</p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="contributions.js"></script>
+  </body>
+</html>
+
