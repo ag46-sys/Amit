@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     ${pub.Pages ? `, pp. ${pub.Pages}` : ''}
                 </p>
                 <div class="pub-links">
-                   ${pub.DOI ? `<a href="${pub.DOI}" target="_blank"><i class="fas fa-external-link-alt"></i> View Publication</a>` : ''}
+                    ${pub.DOI ? `<a href="https://doi.org/${pub.DOI}" target="_blank">View Publication</a>` : ''}
                     ${pub.URL ? `<a href="${pub.URL}" target="_blank"><i class="fas fa-link"></i> Website</a>` : ''}
                     ${pub.PDF ? `<a href="${pub.PDF}" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>` : ''}
                 </div>
@@ -144,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sortFilter.addEventListener('change', filterPublications);
     }
 });
+
 
 
 
