@@ -91,28 +91,32 @@
         <div class="hamburger"><span></span><span></span><span></span></div>
       </nav>
 
-     <main class="presentations-content" style="flex-grow: 1; padding: 2rem 0">
-  <section>
-    <h1>Presentations</h1>
-    <p>
-      Click below to open the presentation. The file will open in PowerPoint or a compatible viewer.
-    </p>
+      <main class="presentations-content" style="flex-grow: 1; padding: 2rem 0">
+        <section>
+          <h1>Presentations</h1>
+          <p>
+            View presentations directly in your browser. Download and print are
+            disabled.
+          </p>
 
-    <!-- PPT Link -->
-    <div class="ppt-container" style="text-align: center; margin: 2rem 0;">
-      <a
-        href="PhD_Journey.pptx"
-        target="_blank"
-        class="btn primary-btn"
-      >
-        <i class="fas fa-file-powerpoint"></i> Open Presentation
-      </a>
-    </div>
-
-    <p class="pdf-description">PhD Journey</p>
-  </section>
-</main>
-
+          <!-- PDF Viewer #1 -->
+          <canvas id="pdf-canvas"></canvas>
+          <p class="pdf-description">PhD Journey</p>
+          <!-- PDF Controls at the bottom, centered -->
+          <div class="pdf-toolbar">
+            <button id="prev-page" title="Previous Page">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-info"
+              >Page <span id="page-num">1</span> /
+              <span id="page-count">1</span></span
+            >
+            <button id="next-page" title="Next Page">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </section>
+      </main>
 
       <footer>
         <p>&copy; 2025 Amit Gupta | Published: July 2025  | Updated: August 2025</p>
@@ -199,7 +203,5 @@
     <script src="script.js"></script>
   </body>
 </html>
-
-
 
 
