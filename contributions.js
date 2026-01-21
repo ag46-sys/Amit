@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let allPublications = [];
     
     // Fetch and parse CSV data
-    fetch('publications.csv')
+    fetch('articles.csv')
         .then(response => response.text())
         .then(csvData => {
             allPublications = parseCSV(csvData);
@@ -144,3 +144,4 @@ document.addEventListener('DOMContentLoaded', function() {
         sortFilter.addEventListener('change', filterPublications);
     }
 });
+
